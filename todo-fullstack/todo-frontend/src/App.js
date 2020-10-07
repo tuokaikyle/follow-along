@@ -10,15 +10,23 @@ function App() {
 }
 
 const Frame = () => {
+  // 从后端传来的数据
   const [raw, setRaw] = useState([]);
+  // 输入框
   const [text, setText] = useState("");
+
+  // 从后端获取数据，保存于raw
   const fetchAll = async () => {
     const res = await fetch("http://localhost:3001/todos");
     setRaw(await res.json());
   };
+
+  // 只请求一次？
   useEffect(() => {
     fetchAll();
   }, []);
+
+  // 把请求来的大json放在小的component里面
   const upper = raw.map((oneRaw) => (
     <Line key={oneRaw._id} oneRaw={oneRaw} fetch={fetchAll} />
   ));
