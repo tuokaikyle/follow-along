@@ -21,11 +21,6 @@ app.get("/", (req, res) => {
   res.json("backend setup: browser tester good");
 });
 
-app.get("/todos", async (req, res) => {
-  const results = await db.collection("todos").find().toArray();
-  res.json(results);
-});
-
 app.listen(3001, () => {
   console.log("backend setup: console test good");
 });
