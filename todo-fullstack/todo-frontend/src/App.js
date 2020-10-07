@@ -26,12 +26,12 @@ const Frame = () => {
     fetchAll();
   }, []);
 
-  // 把请求来的大json放在小的component里面
+  // 把请求来的大json放在小的component里面，传入数据，和刷新upper的方法
   const upper = raw.map((oneRaw) => (
-    <Line key={oneRaw._id} oneRaw={oneRaw} fetch={fetchAll} />
+    <Line key={oneRaw._id} oneRaw={oneRaw} fetchAll={fetchAll} />
   ));
 
-  const add = async () => {
+  const addOne = async () => {
     // 此处fetch包含两个参数，为url, obj. Obj就是req, 包含method, headers, body
     const res = await fetch("http://localhost:3001/add", {
       method: "POST",
@@ -60,7 +60,10 @@ const Frame = () => {
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
-          <button className="ui teal right labeled icon button" onClick={add}>
+          <button
+            className="ui teal right labeled icon button"
+            onClick={addOne}
+          >
             <i className="plus icon"></i>
             add
           </button>
@@ -72,7 +75,38 @@ const Frame = () => {
 
 const Line = (props) => {
   const { done, desc, _id } = props.oneRaw;
-  return <div>{desc}</div>;
+  const deleteOne = async () => {
+    await fetch(`http://localhost:3001/delete/${_id}`, {
+      method: "DELETE",
+    });
+    props.fetchAll();
+  };
+  const toggle = async () => {
+    await fetch(`http://localhost:3001/put/${_id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ desc, done: !done }),
+    });
+    props.fetchAll();
+    // console.log(_id);
+  };
+
+  return (
+    <div className="item">
+      {done ? (
+        <i
+          className="left floated green check square outline icon"
+          onClick={toggle}
+        />
+      ) : (
+        <i className="left floated square outline icon" onClick={toggle} />
+      )}
+      {desc}
+      <i className="right floated red trash icon" onClick={deleteOne}></i>
+    </div>
+  );
 };
 
 export default App;

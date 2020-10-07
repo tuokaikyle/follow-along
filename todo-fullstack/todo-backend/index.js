@@ -22,6 +22,7 @@ app.get("/", (req, res) => {
 });
 
 // 不能漏掉 /
+// 包含app.类别(路径，function)
 app.get("/todos", async (req, res) => {
   const results = await db.collection("todos").find().toArray();
   res.json(results);
@@ -30,6 +31,18 @@ app.get("/todos", async (req, res) => {
 app.post("/add", async (req, res) => {
   const result = await db.collection("todos").insertOne(req.body);
   res.json("posted");
+});
+
+app.delete("/delete/:idddd", async (req, res) => {
+  await db.collection("todos").deleteOne({ _id: ObjectID(req.params.idddd) });
+  res.json("deleted");
+});
+
+app.put("/put/:idzzz", async (req, res) => {
+  await db
+    .collection("todos")
+    .replaceOne({ _id: ObjectID(req.params.idzzz) }, req.body);
+  res.json("putted");
 });
 
 app.listen(3001, () => {
