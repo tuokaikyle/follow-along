@@ -25,7 +25,7 @@ MongoClient.connect(
     // 11 用于每次query之后，删除现有结果。不会累加上一次的结果。可以结合在6里面。
     await db.collection("todos").deleteMany();
 
-    // 6
+    // 6 初始数据库
     await db.collection("todos").insertMany([
       { done: true, desc: "write code" },
       { done: true, desc: "fix bugs" },

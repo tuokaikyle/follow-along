@@ -14,7 +14,7 @@ const List = () => {
   // 19
   const [text, setText] = useState([]);
 
-  // 8
+  // 8 注意此处url与mongoClient不同
   const fetchTodos = async () => {
     const res = await fetch("http://localhost:3001/todos");
     // 以下本来是console.log, 15步改成了setTodos
