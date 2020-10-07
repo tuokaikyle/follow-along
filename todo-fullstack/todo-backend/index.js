@@ -21,9 +21,15 @@ app.get("/", (req, res) => {
   res.json("backend setup: browser tester good");
 });
 
+// 不能漏掉 /
 app.get("/todos", async (req, res) => {
   const results = await db.collection("todos").find().toArray();
   res.json(results);
+});
+
+app.post("/add", async (req, res) => {
+  const result = await db.collection("todos").insertOne(req.body);
+  res.json("posted");
 });
 
 app.listen(3001, () => {
